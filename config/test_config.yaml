@@ -1,0 +1,31 @@
+# 测试配置
+
+# 数据集配置
+data:
+  test_datasets: [Set5, Set14, DIV2K100]
+  test_dirs:
+    Set5: ./data/datasets/Set5
+    Set14: ./data/datasets/Set14
+    DIV2K100: ./data/datasets/DIV2K/val
+  batch_size: 1
+  num_workers: 4
+
+# 模型配置
+model:
+  encoder: EDSR-b  # 可选: EDSR-b, RDN, SwinIR
+  latent_dim: 256  # 潜在空间维度
+  render_dim: 64   # 渲染空间维度
+  n_heads: 8       # 注意力头数
+  n_layers: 6      # 解码器层数
+
+# 测试配置
+test:
+  checkpoint: ./logs/checkpoints/best_model.pth
+  scales: [2, 3, 4, 8, 16, 32]  # 测试的放大倍率
+  save_results: true
+  results_dir: ./results
+
+# 评估指标
+metrics:
+  - PSNR
+  - SSIM 

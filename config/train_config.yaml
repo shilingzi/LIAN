@@ -1,0 +1,53 @@
+# 训练配置
+
+# 数据集配置
+data:
+  train_dataset: DIV2K
+  train_dir: ./data/datasets/DIV2K/train
+  val_dataset: DIV2K100
+  val_dir: ./data/datasets/DIV2K/val
+  patch_size: 32
+  batch_size: 8
+  num_workers: 4
+  augment: true
+
+# 模型配置
+model:
+  encoder: EDSR-b  # 可选: EDSR-b, RDN, SwinIR
+  latent_dim: 128
+  render_dim: 32
+  n_heads: 4
+  n_layers: 4
+
+# 训练配置
+train:
+  lr: 1.0e-4
+  min_lr: 1.0e-7
+  weight_decay: 0.0
+  epochs: 1000
+  save_every: 10
+  val_every: 5
+  resume: false
+  checkpoint: null
+
+# 优化器配置
+optimizer:
+  type: Adam
+  beta1: 0.9
+  beta2: 0.999
+
+# 学习率调度器
+scheduler:
+  type: CosineAnnealingLR
+  T_max: 1000
+
+# 损失函数配置
+loss:
+  type: L1
+  perceptual_weight: 0.1
+  adversarial_weight: 0.005
+
+# 日志配置
+log:
+  tensorboard_dir: ./logs/tensorboard
+  save_dir: ./logs/checkpoints 
