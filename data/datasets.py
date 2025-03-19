@@ -198,7 +198,10 @@ def get_dataloader(config, is_train=True):
         batch_size=batch_size,
         shuffle=shuffle,
         num_workers=config.data.num_workers,
-        pin_memory=True
+        pin_memory=getattr(config.data, 'pin_memory', True),  # 默认启用pin_memory
+        prefetch_factor=getattr(config.data, 'prefetch_factor', 2),  # 默认预加载因子为2
+        persistent_workers=True,  # 保持worker进程存活以减少重启开销
+        drop_last=is_train  # 训练时丢弃不完整的批次
     )
     
     return dataloader 

@@ -6,16 +6,18 @@ data:
   train_dir: ./data/datasets/DIV2K/train
   val_dataset: DIV2K100
   val_dir: ./data/datasets/DIV2K/val
-  patch_size: 32
-  batch_size: 8
-  num_workers: 4
+  patch_size: 24
+  batch_size: 2  # 减小批次大小
+  num_workers: 2
   augment: true
+  pin_memory: true  # 启用pin_memory以加速数据加载
+  prefetch_factor: 2  # 预加载因子
 
 # 模型配置
 model:
   encoder: EDSR-b  # 可选: EDSR-b, RDN, SwinIR
-  latent_dim: 128
-  render_dim: 32
+  latent_dim: 64
+  render_dim: 24
   n_heads: 4
   n_layers: 4
 
@@ -26,9 +28,13 @@ train:
   weight_decay: 0.0
   epochs: 1000
   save_every: 10
-  val_every: 5
+  val_every: 10  # 增加验证间隔
+  val_samples: 5  # 每次验证的样本数量
   resume: false
   checkpoint: null
+  gradient_accumulation_steps: 4  # 梯度累积步数
+  max_grad_norm: 1.0  # 梯度裁剪阈值
+  empty_cache_freq: 32  # 每处理多少个批次清理一次缓存
 
 # 优化器配置
 optimizer:
@@ -50,4 +56,5 @@ loss:
 # 日志配置
 log:
   tensorboard_dir: ./logs/tensorboard
-  save_dir: ./logs/checkpoints 
+  save_dir: ./logs/checkpoints
+  log_memory: true  # 是否记录内存使用情况 
